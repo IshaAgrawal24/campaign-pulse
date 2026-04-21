@@ -52,20 +52,20 @@ async function register(req, res) {
 
 async function login(req, res) {
   try {
-    const { userName, email, password } = req.body;
-    if ((!email && !userName) || !password) {
+    const { identifier, password } = req.body;
+    if (!identifier || !password) {
       return res.status(400).json({
         message: "All fields are required.",
       });
     }
 
     const userExist = await userModel.findOne({
-      $or: [{ userName }, { email }],
+      $or: [{ userName: identifier }, { email: identifier }],
     });
 
     if (!userExist) {
       return res.status(401).json({
-        messgae: "Invalid Credentials",
+        return_message: "Invalid Credentials",
       });
     }
 
@@ -75,7 +75,7 @@ async function login(req, res) {
 
     if (!isMatch) {
       return res.status(401).json({
-        messgae: "Invalid Credentials",
+        return_message: "Invalid Credentials",
       });
     }
 
@@ -127,7 +127,7 @@ async function login(req, res) {
   } catch (error) {
     console.log("Login Controller Error:", error);
     return res.status(500).json({
-      message: "Internal Server Error",
+      return_message: "Internal Server Error",
     });
   }
 }
