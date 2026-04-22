@@ -65,6 +65,8 @@ async function login(req, res) {
 
     if (!userExist) {
       return res.status(401).json({
+        status: false,
+        status_code: 401,
         return_message: "Invalid Credentials",
       });
     }
@@ -75,6 +77,8 @@ async function login(req, res) {
 
     if (!isMatch) {
       return res.status(401).json({
+        status: false,
+        status_code: 401,
         return_message: "Invalid Credentials",
       });
     }
@@ -116,7 +120,7 @@ async function login(req, res) {
 
     res.status(201).json({
       status: true,
-      message: "User logged in successfully.",
+      return_message: "User logged in successfully.",
       user: {
         id: userData._id,
         email: userData.email,
@@ -127,6 +131,8 @@ async function login(req, res) {
   } catch (error) {
     console.log("Login Controller Error:", error);
     return res.status(500).json({
+      status: false,
+      status_code: 500,
       return_message: "Internal Server Error",
     });
   }

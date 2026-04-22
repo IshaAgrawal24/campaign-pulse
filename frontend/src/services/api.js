@@ -1,5 +1,5 @@
 import axios from "axios";
-console.log("import.meta.env.API_URL:", import.meta.env.VITE_API_URL)
+console.log("import.meta.env.API_URL:", import.meta.env.VITE_API_URL);
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true, // important if using cookies
@@ -20,11 +20,16 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log("API Error:", error.response?.data || error.message);
+    const res = error.response;
 
-    // if (error.response?.status === 401) {
-    //   // auto logout (future improvement)
-    // }
+    console.log("API Error:", res?.data?.return_message || error.message);
+
+    if (res?.status === 401) {
+      console.log("Unauthorized - token expired or invalid");
+
+      // Example: logout user
+      localStorage.removeItem("token");
+    }
 
     return Promise.reject(error);
   },
