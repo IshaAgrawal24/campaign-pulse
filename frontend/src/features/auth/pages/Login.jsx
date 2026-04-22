@@ -31,11 +31,13 @@ function Login() {
 
     setLoading(true);
     try {
-      const data = loginApi(userData);
-      localStorage.setItem("token", data.token);
-      // navigate("/");
-    } catch (error) {
-      setShowError(err.response?.data?.return_message || "Something went wrong");
+      const response = await loginApi(userData);
+      localStorage.setItem("token", response.token);
+      navigate("/");
+    } catch (err) {
+      setShowError(
+        err.response?.data?.return_message || "Something went wrong",
+      );
     } finally {
       setLoading(false);
     }
